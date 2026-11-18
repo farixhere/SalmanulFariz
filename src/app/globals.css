@@ -373,3 +373,29 @@ a:focus-visible {
   .orbit-float { animation: none; }
   .orbit-bubble { transition: none; }
 }
+
+/* ---------- Explore CTA ---------- */
+.explore-btn {
+  --mx: 0px;
+  --my: 0px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 211, 255, 0.6);
+  background: linear-gradient(135deg, rgba(59, 107, 255, 0.35), rgba(139, 92, 246, 0.3));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--soft-white);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 22px rgba(59, 107, 255, 0.45);
+  transform: translate(var(--mx), var(--my));
+  transition: transform 0.18s ease-out, box-shadow 0.25s;
+}
+.explore-btn:hover,
+.explore-btn:focus-visible { box-shadow: 0 0 38px rgba(34, 211, 255, 0.75); }
+.explore-btn.is-reacting { box-shadow: 0 0 60px rgba(34, 211, 255, 0.95); cursor: default; }
+@media (prefers-reduced-motion: reduce) { .explore-btn { transition: none; } }

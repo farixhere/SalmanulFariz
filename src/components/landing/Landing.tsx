@@ -6,6 +6,7 @@ import { GlassNav } from "./GlassNav";
 import { Welcome } from "./Welcome";
 import { TerminalText } from "./TerminalText";
 import { OrbitNav } from "./OrbitNav";
+import { ExploreButton } from "./ExploreButton";
 import { useExperience } from "@/store/experience";
 import { experienceStore } from "@/store/experience";
 
@@ -49,7 +50,7 @@ export function Landing() {
           <OrbitNav />
         </div>
         <Welcome />
-        {/* Task 7: <ExploreButton /> mounts here */}
+        <ExploreButton />
       </section>
       <TerminalText />
       <div className="scroll-hint" aria-hidden="true">
