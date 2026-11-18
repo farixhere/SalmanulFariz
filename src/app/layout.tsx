@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "./site";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const serif = Instrument_Serif({
@@ -14,6 +15,7 @@ const serif = Instrument_Serif({
 const description = "Faris's little AI companion. A little personality. A little curiosity. A whole world to discover.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Faris — Nova's Universe",
   description,
   openGraph: {
