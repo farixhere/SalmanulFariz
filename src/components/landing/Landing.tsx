@@ -27,7 +27,7 @@ export function Landing() {
             <span className="grad">Nova</span> is getting the portfolio ready.
           </h1>
           <p className="welcome-tagline">The full portfolio arrives in the next phase.</p>
-          <button type="button" className="skip-btn" onClick={() => experienceStore.reset()}>
+          <button type="button" className="skip-btn" onClick={() => experienceStore.getState().reset()}>
             Back to Nova
           </button>
         </section>
@@ -38,7 +38,7 @@ export function Landing() {
   return (
     <main className="landing">
       <Backdrop />
-      <button type="button" className="skip-btn skip-intro" onClick={() => experienceStore.enter()}>
+      <button type="button" className="skip-btn skip-intro" onClick={() => experienceStore.getState().enter()}>
         Skip intro
       </button>
       <GlassNav />
