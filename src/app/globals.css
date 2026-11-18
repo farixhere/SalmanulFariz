@@ -315,3 +315,61 @@ a:focus-visible {
   .backdrop-stars span, .shard, .cube, .scroll-hint { animation: none; }
   .ch[data-reveal] { animation: none; opacity: 1; }
 }
+
+/* ---------- Orbit nav ---------- */
+.orbit { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.orbit-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+.orbit-ring ellipse {
+  stroke: rgba(34, 211, 255, 0.45);
+  stroke-width: 1.2;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 255, 0.6));
+}
+.orbit-item { position: absolute; transform: translate(-50%, -50%); pointer-events: auto; }
+.orbit-float { animation: nova-float 5s ease-in-out infinite; }
+.orbit-bubble {
+  --mx: 0px;
+  --my: 0px;
+  display: grid;
+  place-items: center;
+  gap: 2px;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 255, 0.55);
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.22), rgba(80, 110, 255, 0.1));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 18px rgba(34, 211, 255, 0.35), inset 0 0 14px rgba(255, 255, 255, 0.08);
+  color: var(--soft-white);
+  cursor: pointer;
+  padding: 0;
+  transform: translate(var(--mx), var(--my)) scale(1);
+  transition: transform 0.18s ease-out, box-shadow 0.2s;
+}
+.orbit-bubble:hover { transform: translate(var(--mx), var(--my)) scale(1.1); box-shadow: 0 0 26px rgba(34, 211, 255, 0.6), inset 0 0 14px rgba(255, 255, 255, 0.12); }
+.orbit-bubble:active { transform: translate(var(--mx), var(--my)) scale(0.94); }
+.orbit-label { font-size: 0.68rem; letter-spacing: 0.04em; }
+
+@media (max-width: 767px), (pointer: coarse) and (orientation: portrait) {
+  .stage-nova { height: auto; display: flex; flex-direction: column; }
+  .stage-nova > .nova-scene { height: clamp(240px, 36vh, 340px); }
+  .orbit {
+    position: static;
+    order: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 6px 0 14px;
+    pointer-events: auto;
+  }
+  .orbit-ring { display: none; }
+  .orbit-item { position: static; transform: none; left: auto !important; top: auto !important; }
+  .orbit-float { animation-duration: 6s; }
+  .orbit-bubble { width: 58px; height: 58px; }
+  .orbit-label { font-size: 0.6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-float { animation: none; }
+  .orbit-bubble { transition: none; }
+}

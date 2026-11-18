@@ -5,6 +5,7 @@ import { Backdrop } from "./Backdrop";
 import { GlassNav } from "./GlassNav";
 import { Welcome } from "./Welcome";
 import { TerminalText } from "./TerminalText";
+import { OrbitNav } from "./OrbitNav";
 import { useExperience } from "@/store/experience";
 import { experienceStore } from "@/store/experience";
 
@@ -45,7 +46,7 @@ export function Landing() {
       <section className="stage">
         <div className="stage-nova">
           <NovaScene />
-          {/* Task 6: <OrbitNav /> mounts here, around Nova */}
+          <OrbitNav />
         </div>
         <Welcome />
         {/* Task 7: <ExploreButton /> mounts here */}
