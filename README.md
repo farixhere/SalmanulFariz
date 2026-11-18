@@ -1,3 +1,8 @@
+# FARIZ
+FARIZ is a philosophy of fearless thinking, self-awareness, and continuous discovery. Reflective in thought, inquisitive by nature, and zealous in the pursuit of truth — always questioning, learning, and seeking meaning beyond the obvious.
+
+---
+
 # Project NOVA — landing page (State A)
 
 The landing screen of Faris's portfolio: a floating glass nav, an orbit of five glass bubbles
