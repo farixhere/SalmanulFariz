@@ -1,0 +1,22 @@
+:root {
+  --space: #02030a;
+  --navy: #070b1f;
+  --blue: #3b6bff;
+  --cyan: #22d3ff;
+  --violet: #8b5cf6;
+  --soft-white: #eef2ff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--space);
+  color: var(--soft-white);
+}
