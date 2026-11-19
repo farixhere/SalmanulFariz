@@ -12,13 +12,15 @@ import { usePointerRef } from "@/hooks/usePointerRef";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
-/** Scales and places Nova + platform so they fit any viewport width, feet near the lower third. */
+/**
+ * Camera sees 4.3 world units of height at the origin. Nova is 3.5 tall, so at fit=1 she fills ~80% of the box,
+ * with her feet near the bottom; on narrow boxes everything shrinks so the platform is never cut off.
+ */
 function Placement({ children }: { children: React.ReactNode }) {
   const width = useThree((s) => s.viewport.width);
-  const fit = Math.min(1, Math.max(0.4, width / 5.2));
-  const scale = 0.5 * fit;
+  const fit = Math.min(1, Math.max(0.4, width / 8.2));
   return (
-    <group scale={scale} position={[0, -0.62 * fit - 0.02, 0]}>
+    <group scale={0.98 * fit} position={[0, -1.68, 0]}>
       {children}
     </group>
   );
@@ -91,7 +93,9 @@ export function NovaScene() {
             <Suspense fallback={null}>
               <Lights />
               <Placement>
-                <Platform reducedMotion={reducedMotion} />
+                <group scale={1.45}>
+                  <Platform reducedMotion={reducedMotion} />
+                </group>
                 <NovaRobot
                   pointer={pointer}
                   reducedMotion={reducedMotion}

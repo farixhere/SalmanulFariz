@@ -37,7 +37,7 @@ export function Platform({ reducedMotion }: { reducedMotion: boolean }) {
     const positions = new Float32Array(PARTICLE_COUNT * 3);
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const radius = 1.5 + Math.random() * 1.5;
+      const radius = 1.4 + Math.random() * 1.3;
       positions[i * 3] = Math.cos(angle) * radius;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 0.35 + Math.sin(angle * 2) * 0.12;
       positions[i * 3 + 2] = Math.sin(angle) * radius;
@@ -57,7 +57,7 @@ export function Platform({ reducedMotion }: { reducedMotion: boolean }) {
   return (
     <group>
       <mesh rotation-x={-Math.PI / 2} position-y={0.005}>
-        <planeGeometry args={[7.5, 7.5]} />
+        <planeGeometry args={[5.2, 5.2]} />
         <meshBasicMaterial map={texture} {...additive} />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position-y={0.01}>

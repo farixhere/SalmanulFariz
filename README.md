@@ -6,7 +6,7 @@ FARIZ is a philosophy of fearless thinking, self-awareness, and continuous disco
 # Project NOVA — landing page (State A)
 
 The landing screen of Faris's portfolio: a floating glass nav, an orbit of five glass bubbles
-(Skills, Projects, Blog, FAQ, About), a real 3D **Nova** robot that follows your cursor, and a
+(Skills, Projects, Blog, FAQ, About), a real 3D **Nova** robot that follows your cursor, a "Welcome to my Portfolio" headline and a
 "Click to Explore" button. The particle transition and the portfolio sections come in later phases;
 for now Skip intro / Explore lead to a small placeholder.
 
