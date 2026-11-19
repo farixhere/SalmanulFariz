@@ -1,14 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Backdrop } from "./Backdrop";
+import { Backdrop, Shards } from "./Backdrop";
 import { GlassNav } from "./GlassNav";
 import { Welcome } from "./Welcome";
 import { TerminalText } from "./TerminalText";
+import { ScrollHint } from "./ScrollHint";
 import { OrbitNav } from "./OrbitNav";
 import { ExploreButton } from "./ExploreButton";
-import { useExperience } from "@/store/experience";
-import { experienceStore } from "@/store/experience";
+import { useExperience, experienceStore } from "@/store/experience";
 
 // WebGL only exists in the browser, so the scene never renders on the server.
 const NovaScene = dynamic(() => import("@/components/nova/NovaScene").then((m) => m.NovaScene), {
@@ -23,16 +23,18 @@ export function Landing() {
     return (
       <main className="landing">
         <Backdrop />
-        <GlassNav />
-        <section className="entered" aria-live="polite">
-          <h1 className="welcome-title">
-            <span className="grad">Nova</span> is getting the portfolio ready.
-          </h1>
-          <p className="welcome-tagline">The full portfolio arrives in the next phase.</p>
-          <button type="button" className="skip-btn" onClick={() => experienceStore.getState().reset()}>
-            Back to Nova
-          </button>
-        </section>
+        <div className="frame">
+          <GlassNav />
+          <section className="entered" aria-live="polite">
+            <h1 className="welcome-title">
+              <span className="grad">Nova</span> is getting the portfolio ready.
+            </h1>
+            <p className="entered-sub">The full portfolio arrives in the next phase.</p>
+            <button type="button" className="back-btn" onClick={() => experienceStore.getState().reset()}>
+              Back to the start
+            </button>
+          </section>
+        </div>
       </main>
     );
   }
@@ -40,23 +42,20 @@ export function Landing() {
   return (
     <main className="landing">
       <Backdrop />
-      <button type="button" className="skip-btn skip-intro" onClick={() => experienceStore.getState().enter()}>
+      <button type="button" className="skip-intro" onClick={() => experienceStore.getState().enter()}>
         Skip intro
       </button>
-      <GlassNav />
-      <section className="stage">
-        <div className="stage-nova">
+      <div className="frame">
+        <Shards />
+        <GlassNav />
+        <OrbitNav />
+        <div className="nova-box">
           <NovaScene />
-          <OrbitNav />
         </div>
         <Welcome />
         <ExploreButton />
-      </section>
-      <TerminalText />
-      <div className="scroll-hint" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <TerminalText />
+        <ScrollHint />
       </div>
     </main>
   );

@@ -2,19 +2,19 @@
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const LEAD = "Hey there! I'm ";
+const LEAD = "Welcome to my ";
+const WORD = "Portfolio";
 
-/** Headline, tagline and microcopy. Characters reveal in well under 1.2s, or instantly with reduced motion. */
+/** Headline and tagline. Characters reveal in about a second, or instantly with reduced motion. */
 export function Welcome() {
   const reduced = useReducedMotion();
-  const word = "Nova.";
-  const total = LEAD.length + word.length;
-  const step = Math.min(0.03, 1 / total); // whole reveal stays under ~1s
-  const chars = (text: string, offset: number, className?: string) =>
+  const total = LEAD.length + WORD.length;
+  const step = Math.min(0.03, 0.9 / total);
+  const chars = (text: string, offset: number) =>
     text.split("").map((c, i) => (
       <span
         key={offset + i}
-        className={`ch ${className ?? ""}`}
+        className="ch"
         style={reduced ? undefined : { animationDelay: `${(offset + i) * step}s` }}
         data-reveal={reduced ? undefined : ""}
       >
@@ -24,14 +24,13 @@ export function Welcome() {
 
   return (
     <div className="welcome">
-      <h1 className="welcome-title" aria-label="Hey there! I'm Nova.">
-        <span aria-hidden="true">
-          {chars(LEAD, 0)}
-          {chars(word, LEAD.length, "grad")}
-        </span>
+      <h1 className="welcome-title" aria-label="Welcome to my Portfolio">
+        <span aria-hidden="true" className="welcome-lead">{chars(LEAD, 0)}</span>
+        <span aria-hidden="true" className="grad">{chars(WORD, LEAD.length)}</span>
       </h1>
-      <p className="welcome-tagline">Faris&apos;s little AI companion. Ready to explore?</p>
-      <p className="welcome-micro">A little personality. A little curiosity. A whole world to discover.</p>
+      <p className="welcome-tagline">
+        <span>Explore. Discover. Get Inspired.</span>
+      </p>
     </div>
   );
 }

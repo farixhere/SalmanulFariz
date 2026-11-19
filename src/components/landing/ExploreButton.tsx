@@ -55,10 +55,10 @@ export function ExploreButton() {
       onFocus={() => hover(true)}
       onBlur={() => hover(false)}
     >
-      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="currentColor">
         <path d="M12 2l1.8 5.7L19.5 9l-5.7 1.8L12 16.5l-1.8-5.7L4.5 9l5.7-1.3zM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9z" />
       </svg>
-      <span>Click to Explore</span>
+      <span className="explore-text">Click to Explore</span>
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 12h14m-6-6 6 6-6 6" />
       </svg>
