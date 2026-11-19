@@ -23,15 +23,14 @@ Node 22.x. Set `NEXT_PUBLIC_SITE_URL` to the real domain for the sitemap / robot
 
 ## How Nova works
 
-`public/models/nova_robot.glb` is 193 flat meshes (no skeleton), Z-up, face on −Y.
-`src/components/nova/buildRig.ts` rotates it upright and groups the meshes by name
-(`src/lib/nova/parts.ts`): **head**, **eyes**, **mouth** (children of the head), **armL / armR**, and the body.
-Each group is pivoted at a measured joint position, so only the head group turns when tracking,
-the eyes slide and blink independently, and the arms can sway or wave.
-`NovaRobot.tsx` drives it each frame with damped motion, clamped angles and a clamped frame delta.
-Touch devices skip cursor tracking and get idle animation plus tap reactions.
-Without WebGL (or on very low-memory devices, or if the GLB fails / the GL context is lost)
-a lightweight 2D Nova is shown instead.
+Nova is built in code (`src/components/nova/buildRig.ts`) from plain three.js shapes: a big rounded helmet with a black
+visor and glowing smile-arc eyes, headphone pods, a small body with a bolt badge, open arms and stubby legs.
+There is no model file to load. `reference/nova_robot.glb` is the original model Faris supplied; it is kept for
+reference only and is not used.
+The head, eyes, mouth and both arms are separate groups, so only the head turns when tracking, the eyes slide and
+blink on their own, and the arms can sway or wave. `NovaRobot.tsx` drives them every frame with damped motion,
+clamped angles and a clamped frame delta. Touch devices skip cursor tracking and get idle animation plus tap reactions.
+Without WebGL (or on very low-memory devices, or if the GL context is lost) a lightweight 2D Nova is shown instead.
 
 ## Notes
 

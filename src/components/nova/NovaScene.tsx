@@ -20,7 +20,7 @@ function Placement({ children }: { children: React.ReactNode }) {
   const width = useThree((s) => s.viewport.width);
   const fit = Math.min(1, Math.max(0.4, width / 7.1));
   return (
-    <group scale={0.825 * fit} position={[0, -1.57, 0]}>
+    <group scale={0.95 * fit} position={[0, -1.58, 0]}>
       {children}
     </group>
   );
@@ -93,7 +93,7 @@ export function NovaScene() {
             <Suspense fallback={null}>
               <Lights />
               <Placement>
-                <group scale={1.35}>
+                <group scale={1.25}>
                   <Platform reducedMotion={reducedMotion} />
                 </group>
                 <NovaRobot
