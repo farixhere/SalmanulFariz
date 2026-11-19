@@ -1,9 +1,11 @@
 /** Decorative layers: starfield, planet horizon, big glass slabs at the edges and small outlined cubes. */
-const STARS = Array.from({ length: 110 }, (_, i) => {
+const STARS = Array.from({ length: 170 }, (_, i) => {
   // deterministic pseudo-random so server and client markup match
   const r = (n: number) => ((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1;
   return { x: r(1) * 100, y: r(2) * 100, s: 1 + r(3) * 1.5, o: 0.2 + r(4) * 0.7, d: r(5) * 5 };
 });
+
+const BOKEH: [number, number, number][] = [[12, 20, 46], [20, 64, 30], [78, 34, 38], [90, 18, 26], [70, 80, 52], [32, 12, 24], [58, 8, 20], [6, 52, 36]];
 
 export function Backdrop() {
   return (
@@ -44,6 +46,10 @@ export function Backdrop() {
 export function Shards() {
   return (
     <div className="shards" aria-hidden="true">
+      <span className="aura" />
+      {BOKEH.map((b, i) => (
+        <span key={i} className="bokeh" style={{ left: `${b[0]}%`, top: `${b[1]}%`, width: b[2], height: b[2], animationDelay: `${i * 0.7}s` }} />
+      ))}
       <span className="slab slab-tl" />
       <span className="slab slab-l" />
       <span className="slab slab-tr" />

@@ -26,6 +26,7 @@ const PARENT: Record<RigGroup, RigGroup | null> = {
 };
 
 export const GLOW_BASE = 1.6;
+export const HEAD_SCALE = 1.25;
 const GLOW_MATERIAL_NAME = "Electric cyan glow";
 
 export interface NovaRig {
@@ -71,6 +72,7 @@ export function buildRig(source: THREE.Object3D): NovaRig {
     (parentKey ? groups[parentKey] : model).add(groups[key]);
   });
   groups.head.rotation.order = "ZXY"; // yaw outermost, like a real neck
+  groups.head.scale.setScalar(HEAD_SCALE); // a slightly bigger head reads cuter, closer to the reference art
 
   const cloned = new Map<THREE.Material, THREE.MeshStandardMaterial>();
   const glow: THREE.MeshStandardMaterial[] = [];

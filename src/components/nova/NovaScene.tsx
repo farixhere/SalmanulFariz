@@ -14,13 +14,13 @@ import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
 /**
  * Camera sees 4.3 world units of height at the origin. Nova is 3.5 tall, so at fit=1 she fills ~80% of the box,
- * with her feet near the bottom; on narrow boxes everything shrinks so the platform is never cut off.
+ * with her feet near the bottom (tuned so a 800x480 box puts head at y=225 and feet at y=590 of the reference); on narrow boxes everything shrinks so the platform is never cut off.
  */
 function Placement({ children }: { children: React.ReactNode }) {
   const width = useThree((s) => s.viewport.width);
-  const fit = Math.min(1, Math.max(0.4, width / 8.2));
+  const fit = Math.min(1, Math.max(0.4, width / 7.1));
   return (
-    <group scale={0.98 * fit} position={[0, -1.68, 0]}>
+    <group scale={0.825 * fit} position={[0, -1.57, 0]}>
       {children}
     </group>
   );
@@ -29,10 +29,10 @@ function Placement({ children }: { children: React.ReactNode }) {
 function Lights() {
   return (
     <>
-      <ambientLight intensity={0.35} color="#9fb4ff" />
-      <directionalLight position={[3, 5, 6]} intensity={1.6} color="#ffffff" />
-      <pointLight position={[-4, 2, -2]} intensity={40} color="#22d3ff" distance={14} />
-      <pointLight position={[4, 1.5, -2]} intensity={34} color="#8b5cf6" distance={14} />
+      <ambientLight intensity={0.55} color="#9fb4ff" />
+      <directionalLight position={[3, 5, 6]} intensity={2.1} color="#ffffff" />
+      <pointLight position={[-4, 2, -2]} intensity={60} color="#22d3ff" distance={14} />
+      <pointLight position={[4, 1.5, -2]} intensity={50} color="#8b5cf6" distance={14} />
       <pointLight position={[0, 2.2, 5]} intensity={14} color="#cfe0ff" distance={12} />
       <Environment resolution={128} frames={1}>
         <Lightformer form="rect" intensity={2.2} position={[0, 4, 3]} scale={[8, 3, 1]} color="#ffffff" />
@@ -93,7 +93,7 @@ export function NovaScene() {
             <Suspense fallback={null}>
               <Lights />
               <Placement>
-                <group scale={1.45}>
+                <group scale={1.35}>
                   <Platform reducedMotion={reducedMotion} />
                 </group>
                 <NovaRobot
