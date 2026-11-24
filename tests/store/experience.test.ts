@@ -81,3 +81,56 @@ test("getState returns a stable snapshot until something changes", () => {
   store.getState().openSection("blog");
   assert.notEqual(store.getState(), before);
 });
+
+test("beginTransition only starts from the reacting phase", () => {
+  const store = createExperienceStore();
+  store.getState().beginTransition();
+  assert.equal(store.getState().phase, "idle");
+  store.getState().explore();
+  store.getState().beginTransition();
+  assert.equal(store.getState().phase, "transitioning");
+});
+
+test("while transitioning, explore and hover are ignored and Nova stays happy", () => {
+  let calls = 0;
+  const store = createExperienceStore({ onExplore: () => void calls++ });
+  store.getState().explore();
+  store.getState().beginTransition();
+  store.getState().explore();
+  store.getState().hoverExplore(true);
+  assert.equal(calls, 1);
+  assert.equal(store.getState().mood, "happy");
+});
+
+test("enter after a transition lands on State B with a calm Nova and an idle phase", () => {
+  const store = createExperienceStore();
+  store.getState().explore();
+  store.getState().beginTransition();
+  store.getState().enter();
+  const s = store.getState();
+  assert.equal(s.entered, true);
+  assert.equal(s.phase, "idle");
+  assert.equal(s.mood, "relaxed");
+});
+
+test("skip jumps straight to State B from idle or mid-reaction", () => {
+  const a = createExperienceStore();
+  a.getState().skip();
+  assert.equal(a.getState().entered, true);
+  const b = createExperienceStore();
+  b.getState().explore();
+  b.getState().skip();
+  assert.equal(b.getState().entered, true);
+  assert.equal(b.getState().phase, "idle");
+});
+
+test("reset during a transition returns to the untouched landing", () => {
+  const store = createExperienceStore();
+  store.getState().explore();
+  store.getState().beginTransition();
+  store.getState().reset();
+  assert.deepEqual(
+    [store.getState().phase, store.getState().entered, store.getState().mood],
+    ["idle", false, "relaxed"],
+  );
+});
