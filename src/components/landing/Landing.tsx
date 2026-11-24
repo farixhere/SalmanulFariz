@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import { Backdrop, Shards } from "./Backdrop";
 import { GlassNav } from "./GlassNav";
 import { Welcome } from "./Welcome";
@@ -8,7 +9,11 @@ import { TerminalText } from "./TerminalText";
 import { ScrollHint } from "./ScrollHint";
 import { OrbitNav } from "./OrbitNav";
 import { ExploreButton } from "./ExploreButton";
+import { Dissolve } from "./Dissolve";
+import { PortfolioHome } from "./PortfolioHome";
 import { useExperience, experienceStore } from "@/store/experience";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCoarsePointer } from "@/hooks/useCoarsePointer";
 
 // WebGL only exists in the browser, so the scene never renders on the server.
 const NovaScene = dynamic(() => import("@/components/nova/NovaScene").then((m) => m.NovaScene), {
@@ -16,47 +21,58 @@ const NovaScene = dynamic(() => import("@/components/nova/NovaScene").then((m) =
   loading: () => <div className="nova-scene nova-loading" aria-hidden="true" />,
 });
 
+const REACT_MS = 1000; // how long Nova reacts to the click before the dissolve starts
+const REACT_MS_REDUCED = 400;
+
+function lowMemory(): boolean {
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+  return memory !== undefined && memory <= 2;
+}
+
 export function Landing() {
   const entered = useExperience((s) => s.entered);
+  const phase = useExperience((s) => s.phase);
+  const reduced = useReducedMotion();
+  const coarse = useCoarsePointer();
 
-  if (entered) {
-    return (
-      <main className="landing">
-        <Backdrop />
-        <div className="frame">
-          <GlassNav />
-          <section className="entered" aria-live="polite">
-            <h1 className="welcome-title">
-              <span className="grad">Nova</span> is getting the portfolio ready.
-            </h1>
-            <p className="entered-sub">The full portfolio arrives in the next phase.</p>
-            <button type="button" className="back-btn" onClick={() => experienceStore.getState().reset()}>
-              Back to the start
-            </button>
-          </section>
-        </div>
-      </main>
-    );
-  }
+  // Entrance sequence: click -> Nova reacts -> dissolve -> State B. Leaving the phase cancels the timer.
+  useEffect(() => {
+    if (phase !== "reacting") return;
+    const id = setTimeout(() => experienceStore.getState().beginTransition(), reduced ? REACT_MS_REDUCED : REACT_MS);
+    return () => clearTimeout(id);
+  }, [phase, reduced]);
+
+  const dissolving = phase === "transitioning" && !entered;
 
   return (
-    <main className="landing">
+    <main className={`landing${dissolving ? " is-dissolving" : ""}`}>
       <Backdrop />
-      <button type="button" className="skip-intro" onClick={() => experienceStore.getState().enter()}>
-        Skip intro
-      </button>
+      {!entered && (
+        <button type="button" className="skip-intro" onClick={() => experienceStore.getState().skip()}>
+          Skip intro
+        </button>
+      )}
       <div className="frame">
-        <Shards />
         <GlassNav />
-        <OrbitNav />
-        <div className="nova-box">
-          <NovaScene />
-        </div>
-        <Welcome />
-        <ExploreButton />
-        <TerminalText />
-        <ScrollHint />
+        {entered ? (
+          <PortfolioHome />
+        ) : (
+          <>
+            <Shards />
+            <OrbitNav />
+            <div className="nova-box">
+              <NovaScene />
+            </div>
+            <Welcome />
+            <ExploreButton />
+            <TerminalText />
+            <ScrollHint />
+          </>
+        )}
       </div>
+      {dissolving && (
+        <Dissolve simple={reduced || lowMemory()} coarse={coarse} onDone={() => experienceStore.getState().enter()} />
+      )}
     </main>
   );
 }

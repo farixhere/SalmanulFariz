@@ -1,7 +1,7 @@
 import type { Expression } from "../lib/nova/expressions.ts";
 
 export type SectionId = "skills" | "projects" | "blog" | "faq" | "about";
-export type Phase = "idle" | "reacting";
+export type Phase = "idle" | "reacting" | "transitioning";
 
 export interface ExperienceState {
   /** True once the visitor has left the landing (State B). */
@@ -16,8 +16,13 @@ export interface ExperienceActions {
   hoverExplore(on: boolean): void;
   /** Starts the Explore reaction. Ignored unless the phase is idle. */
   explore(): void;
+  /** Moves from the Explore reaction into the dissolve. Ignored unless reacting. */
+  beginTransition(): void;
   openSection(id: SectionId): void;
+  /** Lands on State B (the portfolio) and calms Nova. */
   enter(): void;
+  /** Skip intro: straight to State B from any landing phase. */
+  skip(): void;
   reset(): void;
 }
 
@@ -50,7 +55,7 @@ export function createExperienceStore(options: { onExplore?: () => void } = {}):
 
   const actions: ExperienceActions = {
     hoverExplore(on) {
-      if (state.phase === "reacting") return;
+      if (state.phase !== "idle") return;
       set({ mood: on ? "excited" : "relaxed" });
     },
     explore() {
@@ -58,11 +63,18 @@ export function createExperienceStore(options: { onExplore?: () => void } = {}):
       set({ phase: "reacting", mood: "happy" });
       options.onExplore?.();
     },
+    beginTransition() {
+      if (state.phase !== "reacting") return;
+      set({ phase: "transitioning" });
+    },
     openSection(id) {
       set({ target: id });
     },
     enter() {
-      set({ entered: true });
+      set({ entered: true, phase: "idle", mood: "relaxed" });
+    },
+    skip() {
+      set({ entered: true, phase: "idle", mood: "relaxed" });
     },
     reset() {
       set({ ...INITIAL });

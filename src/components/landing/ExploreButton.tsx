@@ -1,33 +1,18 @@
 "use client";
 
-import { useEffect, useRef, type PointerEvent } from "react";
+import type { PointerEvent } from "react";
 import { experienceStore, useExperience } from "@/store/experience";
 
 const MAGNET_MAX = 8; // px
-const RESET_AFTER_MS = 1500;
 
-/** "Click to Explore". The real transition arrives in a later phase; for now Nova reacts, then everything resets. */
+/** "Click to Explore": Nova reacts, then the landing dissolves into the portfolio (see Landing). */
 export function ExploreButton() {
   const reacting = useExperience((s) => s.phase !== "idle");
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-    },
-    [],
-  );
-
   const hover = (on: boolean) => experienceStore.getState().hoverExplore(on);
 
   const onClick = () => {
-    const { phase, explore } = experienceStore.getState();
-    if (phase !== "idle") return; // ignore double clicks while Nova is reacting
-    explore();
-    timer.current = setTimeout(() => {
-      const s = experienceStore.getState();
-      if (s.phase === "reacting" && !s.entered) s.reset();
-    }, RESET_AFTER_MS);
+    // The entrance sequence in Landing takes over from here: reaction, then dissolve, then State B.
+    experienceStore.getState().explore();
   };
 
   const pull = (e: PointerEvent<HTMLButtonElement>) => {
